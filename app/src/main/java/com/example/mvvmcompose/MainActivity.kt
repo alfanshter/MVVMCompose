@@ -28,18 +28,41 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-//@AndroidEntryPoint
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            App()
+            MVVMComposeTheme {
+                App()
+            }
         }
     }
 }
 
+@Composable
+fun App() {
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = "category" ){
+        composable(route= "category"){
+            CategoryScreen {
+                navController.navigate("detail/${it}")
+            }
+        }
+        composable(route = "detail/{category}",
+            arguments = listOf(
+                navArgument("category"){
+                    type = NavType.StringType
+                }
+            )
+        ){
+            DetailScreen()
+        }
+    }
+}
+/*
 @Composable
 fun App() {
     val navController = rememberNavController()
@@ -79,4 +102,4 @@ fun LoginScreen() {
 @Composable
 fun MainScreen(email : String) {
     Text(text = "Main Screen - $email", style = MaterialTheme.typography.headlineSmall)
-}
+}*/
