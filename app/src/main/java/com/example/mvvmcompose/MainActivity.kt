@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.example.mvvmcompose
 
 import android.os.Bundle
@@ -5,12 +7,18 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavType
@@ -36,7 +44,19 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MVVMComposeTheme {
-                App()
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = {
+                            Text(text = "Tweetsy")
+                            })
+                    }
+                ) {
+                    Box(modifier = Modifier.padding(it)) {
+                        App()
+                    }
+
+                }
             }
         }
     }
@@ -45,19 +65,19 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "category" ){
-        composable(route= "category"){
+    NavHost(navController = navController, startDestination = "category") {
+        composable(route = "category") {
             CategoryScreen {
                 navController.navigate("detail/${it}")
             }
         }
         composable(route = "detail/{category}",
             arguments = listOf(
-                navArgument("category"){
+                navArgument("category") {
                     type = NavType.StringType
                 }
             )
-        ){
+        ) {
             DetailScreen()
         }
     }
