@@ -22,15 +22,9 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var tweetApi: TweetApi
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        GlobalScope.launch {
-            var response = tweetApi.getCategories(Constant.API_KEY)
-            Log.d("Alfan" , response.body()!!.distinct().toString())
-        }
+
         setContent {
             MVVMComposeTheme {
                 // A surface container using the 'background' color from the theme
